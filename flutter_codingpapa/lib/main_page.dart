@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_codingpapa/feed_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    Container(color: Colors.primaries[0],),
+    FeedPage(),
     Container(color: Colors.primaries[1],),
     Container(color: Colors.primaries[2],),
     Container(color: Colors.primaries[3],),
@@ -23,13 +24,7 @@ class _MainPageState extends State<MainPage> {
     setState(() {});
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        title: Text('20억개의 앱'),
-      ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _widgetOptions,
-      ),
+      body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,

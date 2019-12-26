@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_codingpapa/main_page.dart';
 
+import 'constants/material_white_color.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -9,9 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MainPage(),
-
+      theme: ThemeData(primarySwatch: white),
     );
   }
 }
-
-
