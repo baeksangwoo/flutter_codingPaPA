@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_codingpapa/utils/profile_img_path.dart';
 
 class FeedPage extends StatelessWidget {
   @override
@@ -31,22 +32,44 @@ class FeedPage extends StatelessWidget {
       body: ListView.builder(
           itemCount: 14,
           itemBuilder: (BuildContext context, int index) {
-            return _feedItem(index);
+            return _postItem(index);
           }),
     );
   }
-//command + alt + m == method 단축키
-  Column _feedItem(int index) {
+//command + alt + m == method 단축
+  Column _postItem(int index) {
     return Column(
             children: <Widget>[
-              _feedImage(index),
+              _postHeader('username $index'),
+              _postImage(index),
               //문제점: 이미지를 받아와서 보여주다가 다시 생성이 되면 다시 다운받게 된다.
               //캐슁 이미지를 사용해야한다. 메모리 상에 저장하고 하는 것은 라이브러리에서 자동으로 해준다,
             ],
           );
   }
 
-  CachedNetworkImage _feedImage(int index) {
+  Row _postHeader(String username) {
+    return Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                      getProfileImgPath(username)
+                    ),
+                    radius: 16,
+                  ),
+                ),
+                Expanded(child: Text(username)),
+                IconButton(
+                  icon: Icon(Icons.more_horiz,color: Colors.black87,),
+                  onPressed: null,
+                )
+              ],
+            );
+  }
+
+  CachedNetworkImage _postImage(int index) {
     return CachedNetworkImage(
                 imageUrl: 'https://picsum.photos/id/$index/200/200',
                 imageBuilder:
