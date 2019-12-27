@@ -49,59 +49,73 @@ class FeedPage extends StatelessWidget {
         _postActions(),
         _postLikes(),
         _postCaption(context, index),
-
+        _allComments(),
         //문제점: 이미지를 받아와서 보여주다가 다시 생성이 되면 다시 다운받게 된다.
         //캐슁 이미지를 사용해야한다. 메모리 상에 저장하고 하는 것은 라이브러리에서 자동으로 해준다,
       ],
     );
   }
 
+  FlatButton _allComments() {
+    return FlatButton(
+          onPressed: null,
+          child: Text('Show All 4 Comments',style: TextStyle(color: Colors.grey[600]),));
+  }
+
   Padding _postCaption(BuildContext context, int index) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: common_gap , vertical: common_gap),
-        child: Comment( username: 'username $index',caption: 'I love Summer So much Yeahj!!!!!!!!!!!!!!!!!!!!!!!!!',),
-      );
+      padding: const EdgeInsets.symmetric(
+          horizontal: common_gap, vertical: common_gap),
+      child: Comment(
+        username: 'username $index',
+        caption: 'I love Summer So much Yeahj!!!!!!!!!!!!!!!!!!!!!!!!!',
+      ),
+    );
   }
+
   Padding _postLikes() {
     return Padding(
-          padding: const EdgeInsets.only(left: common_gap),
-          child: Text('80 likes',style:  TextStyle(fontWeight:FontWeight.bold),));
+        padding: const EdgeInsets.only(left: common_gap),
+        child: Text(
+          '80 likes',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ));
   }
 
   Row _postActions() {
     return Row(
-        children: <Widget>[
-          IconButton(
-            icon: ImageIcon(
-              AssetImage('assets/bookmark.png'),
-              color: Colors.black87,
-            ),
-            onPressed: null,
+      children: <Widget>[
+        IconButton(
+          icon: ImageIcon(
+            AssetImage('assets/bookmark.png'),
+            color: Colors.black87,
           ),
-          IconButton(
-            icon: ImageIcon(
-              AssetImage('assets/comment.png'),
-              color: Colors.black87,
-            ),
-            onPressed: null,
+          onPressed: null,
+        ),
+        IconButton(
+          icon: ImageIcon(
+            AssetImage('assets/comment.png'),
+            color: Colors.black87,
           ),
-          IconButton(
-            icon: ImageIcon(
-              AssetImage('assets/direct_message.png'),
-              color: Colors.black87,
-            ),
-            onPressed: null,
+          onPressed: null,
+        ),
+        IconButton(
+          icon: ImageIcon(
+            AssetImage('assets/direct_message.png'),
+            color: Colors.black87,
           ),
-          Spacer(),
-          IconButton(
-            icon: ImageIcon(
-              AssetImage('assets/heart_selected.png'),
-              color: Colors.black87,
-            ),
-            onPressed: null,
-          )
-        ],
-      );
+          onPressed: null,
+        ),
+        Spacer(),
+        IconButton(
+          icon: ImageIcon(
+            AssetImage('assets/heart_selected.png'),
+            color: Colors.redAccent,
+          ),
+          onPressed: null,
+        )
+      ],
+    );
   }
 
   Row _postHeader(String username) {
