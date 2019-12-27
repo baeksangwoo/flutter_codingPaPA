@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_codingpapa/constants/size.dart';
 import 'package:flutter_codingpapa/utils/profile_image_path.dart';
+import 'package:flutter_codingpapa/widget/comment.dart';
 
 class FeedPage extends StatelessWidget {
   @override
@@ -47,7 +48,8 @@ class FeedPage extends StatelessWidget {
         _postImage(index),
         _postActions(),
         _postLikes(),
-        _postCaption(context, index)
+        _postCaption(context, index),
+
         //문제점: 이미지를 받아와서 보여주다가 다시 생성이 되면 다시 다운받게 된다.
         //캐슁 이미지를 사용해야한다. 메모리 상에 저장하고 하는 것은 라이브러리에서 자동으로 해준다,
       ],
@@ -56,27 +58,10 @@ class FeedPage extends StatelessWidget {
 
   Padding _postCaption(BuildContext context, int index) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: common_gap),
-        child: RichText(
-          text: TextSpan(
-            style: DefaultTextStyle.of(context).style, //context는 현재 앱의 상태를 가지고 있는 것이다.
-            children: <TextSpan>[                      //현재 어떤 상태인지 가져와 보여주는 것이다.
-              TextSpan(
-                text: 'username $index',
-                style: TextStyle(fontWeight: FontWeight.bold)
-              ),
-              TextSpan(
-                text: ''
-              ),
-              TextSpan(
-                text: "Yeah!!!!!!!!!! some Thing sgogogogogogogoggoo Missing Summer!!",
-              ),
-            ]
-          ),
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: common_gap , vertical: common_gap),
+        child: Comment( username: 'username $index',caption: 'I love Summer So much Yeahj!!!!!!!!!!!!!!!!!!!!!!!!!',),
       );
   }
-
   Padding _postLikes() {
     return Padding(
           padding: const EdgeInsets.only(left: common_gap),
