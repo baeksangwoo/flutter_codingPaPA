@@ -18,7 +18,7 @@ class _MainPageState extends State<MainPage> {
     Container(color: Colors.primaries[3],),
     ProfilePage(),
   ];
-
+//stack 있고 children
   @override
   Widget build(BuildContext context) {
     setState(() {});
