@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_codingpapa/constants/size.dart';
 import 'package:flutter_codingpapa/utils/profile_image_path.dart';
 
 class FeedPage extends StatelessWidget {
@@ -32,66 +33,102 @@ class FeedPage extends StatelessWidget {
       body: ListView.builder(
           itemCount: 14,
           itemBuilder: (BuildContext context, int index) {
-            return _postItem(index);
+            return _postItem(index, context);
           }),
     );
   }
 
 //command + alt + m == method 단축키
-  Column _postItem(int index) {
+  Column _postItem(int index, BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _postHeader('username $index'),
         _postImage(index),
-        Row(
-          children: <Widget>[
-            IconButton(
-              icon: ImageIcon(
-                AssetImage('assets/bookmark.png'),
-                color: Colors.black87,
-              ),
-              onPressed: null,
-            ),
-            IconButton(
-              icon: ImageIcon(
-                AssetImage('assets/comment.png'),
-                color: Colors.black87,
-              ),
-              onPressed: null,
-            ),
-            IconButton(
-              icon: ImageIcon(
-                AssetImage('assets/direct_message.png'),
-                color: Colors.black87,
-              ),
-              onPressed: null,
-            ),
-            Spacer(),
-            IconButton(
-              icon: ImageIcon(
-                AssetImage('assets/heart_selected.png'),
-                color: Colors.black87,
-              ),
-              onPressed: null,
-            )
-          ],
-        )
+        _postActions(),
+        _postLikes(),
+        _postCaption(context, index)
         //문제점: 이미지를 받아와서 보여주다가 다시 생성이 되면 다시 다운받게 된다.
         //캐슁 이미지를 사용해야한다. 메모리 상에 저장하고 하는 것은 라이브러리에서 자동으로 해준다,
       ],
     );
   }
 
+  Padding _postCaption(BuildContext context, int index) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: common_gap),
+        child: RichText(
+          text: TextSpan(
+            style: DefaultTextStyle.of(context).style, //context는 현재 앱의 상태를 가지고 있는 것이다.
+            children: <TextSpan>[                      //현재 어떤 상태인지 가져와 보여주는 것이다.
+              TextSpan(
+                text: 'username $index',
+                style: TextStyle(fontWeight: FontWeight.bold)
+              ),
+              TextSpan(
+                text: ''
+              ),
+              TextSpan(
+                text: "Yeah!!!!!!!!!! some Thing sgogogogogogogoggoo Missing Summer!!",
+              ),
+            ]
+          ),
+        ),
+      );
+  }
+
+  Padding _postLikes() {
+    return Padding(
+          padding: const EdgeInsets.only(left: common_gap),
+          child: Text('80 likes',style:  TextStyle(fontWeight:FontWeight.bold),));
+  }
+
+  Row _postActions() {
+    return Row(
+        children: <Widget>[
+          IconButton(
+            icon: ImageIcon(
+              AssetImage('assets/bookmark.png'),
+              color: Colors.black87,
+            ),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: ImageIcon(
+              AssetImage('assets/comment.png'),
+              color: Colors.black87,
+            ),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: ImageIcon(
+              AssetImage('assets/direct_message.png'),
+              color: Colors.black87,
+            ),
+            onPressed: null,
+          ),
+          Spacer(),
+          IconButton(
+            icon: ImageIcon(
+              AssetImage('assets/heart_selected.png'),
+              color: Colors.black87,
+            ),
+            onPressed: null,
+          )
+        ],
+      );
+  }
+
   Row _postHeader(String username) {
     return Row(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(common_gap),
           child: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(
               getProfileImgPath(username),
             ),
-            radius: 16,
+            radius: profile_radius,
           ),
         ),
         Expanded(child: Text(username)), //expanded는 남은 자리를 차지한다.
