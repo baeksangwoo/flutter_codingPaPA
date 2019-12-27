@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_codingpapa/feed_page.dart';
+import 'package:flutter_codingpapa/screens/feed_page.dart';
+import 'package:flutter_codingpapa/screens/profile_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -15,8 +16,7 @@ class _MainPageState extends State<MainPage> {
     Container(color: Colors.primaries[1],),
     Container(color: Colors.primaries[2],),
     Container(color: Colors.primaries[3],),
-    Container(color: Colors.primaries[4],),
-    Container(color: Colors.primaries[5],),
+    ProfilePage(),
   ];
 
   @override
