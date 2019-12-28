@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_codingpapa/screens/feed_page.dart';
 import 'package:flutter_codingpapa/screens/profile_page.dart';
 
+import 'constants/size.dart';
+
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
+
 
   int _selectedIndex = 0;
 
@@ -21,6 +24,11 @@ class _MainPageState extends State<MainPage> {
 //stack 있고 children
   @override
   Widget build(BuildContext context) {
+    if(size == null)
+      {
+        size = MediaQuery.of(context).size;
+      }
+
     setState(() {});
     // TODO: implement build
     return Scaffold(
