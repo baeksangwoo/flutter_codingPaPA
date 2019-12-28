@@ -58,33 +58,50 @@ class _ProfilePageState extends State<ProfilePage> {
       child: SafeArea(
         child: Column(
           children: <Widget>[
-            _usernameIconButton()
+            _usernameIconButton(),
+            Expanded(
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverList(
+                    delegate: SliverChildListDelegate(_coloredContainers()),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),
     );
   }
 
+  List<Widget> _coloredContainers() {
+    return List<Widget>.generate(
+        20,
+        (i) => Container(
+              height: 150,
+              color: Colors.primaries[i % Colors.primaries.length],
+            ));
+  }
+
   Row _usernameIconButton() {
     return Row(
-            children: <Widget>[
-              Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.only(left: common_gap),
-                      child: Text(
-                        'Coding EnEnd',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ))),
-              IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  setState(() {
-                    _menuOpened = !_menuOpened; //화면이 바뀔 때 마다 바꾸기
-                  });
-                },
-              )
-            ],
-          );
+      children: <Widget>[
+        Expanded(
+            child: Padding(
+                padding: const EdgeInsets.only(left: common_gap),
+                child: Text(
+                  'Coding EnEnd',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ))),
+        IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            setState(() {
+              _menuOpened = !_menuOpened; //화면이 바뀔 때 마다 바꾸기
+            });
+          },
+        )
+      ],
+    );
   }
 }
