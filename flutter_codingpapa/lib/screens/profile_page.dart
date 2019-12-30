@@ -1,17 +1,37 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_codingpapa/constants/size.dart';
 import 'package:flutter_codingpapa/utils/profile_image_path.dart';
+import 'package:flutter_codingpapa/widget/profile_side_menu.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
   bool _menuOpened = false;
   double menuWidth;
   int duration = 200;
   AlignmentGeometry tabAlign = Alignment.centerLeft;
+  bool _tabIconGridSelected = true;
+  double _girdMargin = 0;
+  double _myImgGridMargin = size.width;
+  //singleTickerProvider는 frame이 변할 때마다 하나의 애니메이션을 지원한다.
+
+  @override
+  void initState() {
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: duration));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,23 +47,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return AnimatedContainer(
       width: menuWidth,
       curve: Curves.easeInOut,
-      color: Colors.grey[200],
+      color: Colors.grey[duration],
       duration: Duration(milliseconds: duration),
       transform: Matrix4.translationValues(
           _menuOpened ? size.width - menuWidth : size.width, 0, 0),
       child: SafeArea(
         child: SizedBox(
           width: menuWidth,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              FlatButton(
-                child: Text('The beginner Coding'),
-                onPressed: null,
-              )
-            ],
-          ),
+          child: ProfileSideMenu(),
         ),
       ),
     );
@@ -71,7 +82,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       _getTabIconButtons,
                       _getAnimatedSelectedBar
                     ]),
-                  )
+                  ),
+                  _getImageGrid(context)
                 ],
               ),
             )
@@ -80,6 +92,38 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
+  SliverToBoxAdapter _getImageGrid(BuildContext context) => SliverToBoxAdapter(
+    child: Stack(
+      children: <Widget>[
+        AnimatedContainer(
+          transform: Matrix4.translationValues(_girdMargin, 0, 0),
+          duration: Duration(milliseconds: duration),
+          curve: Curves.easeInOut,
+          child: _imageGrid,
+        ), AnimatedContainer(
+          transform: Matrix4.translationValues(_myImgGridMargin, 0, 0),
+          duration: Duration(milliseconds: duration),
+          curve: Curves.easeInOut,
+          child: _imageGrid,
+        ),
+      ],
+    ),
+  );
+
+  GridView get _imageGrid => GridView.count(
+    physics: NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    crossAxisCount: 5,
+    childAspectRatio: 1,
+    children: List.generate(30, (index)=> _gridImgItem(index)
+    ),
+  );
+
+  CachedNetworkImage _gridImgItem(int index) => CachedNetworkImage(
+    fit: BoxFit.cover,
+    imageUrl: "https://picsum.photos/id/$index/100/100"
+  );
 
   Padding _editProfileButton() {
     return Padding(
@@ -186,8 +230,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ))),
         IconButton(
-          icon: Icon(Icons.menu),
+          icon: AnimatedIcon(
+              icon: AnimatedIcons.menu_close,
+              progress: _animationController,
+              semanticLabel: "Show Menu",
+          ),
           onPressed: () {
+            _menuOpened ? _animationController.reverse(): _animationController.forward();
             setState(() {
               _menuOpened = !_menuOpened; //화면이 바뀔 때 마다 바꾸기
             });
@@ -201,7 +250,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           Expanded(
             child: IconButton(
-              icon: ImageIcon(AssetImage("assets/grid.png")),
+              icon: ImageIcon(AssetImage("assets/grid.png"), color: _tabIconGridSelected?Colors.black:Colors.black26,),
               onPressed: () {
                 _setTab(true);
               },
@@ -209,7 +258,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Expanded(
             child: IconButton(
-              icon: ImageIcon(AssetImage("assets/saved.png")),
+              icon: ImageIcon(AssetImage("assets/saved.png"), color: _tabIconGridSelected?Colors.black26:Colors.black,),
               onPressed: () {
                 _setTab(false);
               },
@@ -220,7 +269,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget get _getAnimatedSelectedBar => AnimatedContainer(
         alignment: tabAlign,
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: duration),
         curve: Curves.easeInOut,
         color: Colors.transparent,
         height: 1,
@@ -236,8 +285,14 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       if (tabLeft) {
         this.tabAlign = Alignment.centerLeft;
+        this._tabIconGridSelected= true;
+        this._girdMargin =0;
+        this._myImgGridMargin =size.width;
       } else {
         this.tabAlign = Alignment.centerRight;
+        this._tabIconGridSelected= false;
+        this._girdMargin = -size.width;
+        this._myImgGridMargin =0;
       }
     });
   }
