@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_codingpapa/screens/camera_page.dart';
 import 'package:flutter_codingpapa/screens/feed_page.dart';
 import 'package:flutter_codingpapa/screens/profile_page.dart';
+import 'package:flutter_codingpapa/screens/search_page.dart';
 
 import 'constants/size.dart';
 
@@ -10,24 +12,26 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
-
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
     FeedPage(),
-    Container(color: Colors.primaries[1],),
-    Container(color: Colors.primaries[2],),
-    Container(color: Colors.primaries[3],),
+    SearchPage(),
+    Container(
+      color: Colors.primaries[2],
+    ),
+    Container(
+      color: Colors.primaries[3],
+    ),
     ProfilePage(),
   ];
+
 //stack 있고 children
   @override
   Widget build(BuildContext context) {
-    if(size == null)
-      {
-        size = MediaQuery.of(context).size;
-      }
+    if (size == null) {
+      size = MediaQuery.of(context).size;
+    }
 
     setState(() {});
     // TODO: implement build
@@ -62,23 +66,28 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-
   void _onItemTapped(int index) {
-    setState((){
-      _selectedIndex = index;
-    });
+    if (index == 2) {
+      openCamera(context);
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
+  openCamera(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => CameraPage()));
+  }
 }
-
 
 BottomNavigationBarItem _buildBottomNavigationBarItem(
     {String activeIconPath, String iconPath}) {
   return BottomNavigationBarItem(
     activeIcon:
-    activeIconPath == null ? null : ImageIcon(AssetImage(activeIconPath)),
+        activeIconPath == null ? null : ImageIcon(AssetImage(activeIconPath)),
     icon: ImageIcon(AssetImage(iconPath)),
     title: Text(''),
   );
 }
-
